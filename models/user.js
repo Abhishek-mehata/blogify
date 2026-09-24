@@ -1,5 +1,6 @@
 const { Schema, model } = require("mongoose")
-const { randomBytes, createHmac } = require("node:crypto")
+const { randomBytes, createHmac } = require("node:crypto");
+const { createTokenForUser } = require("../services/authentication");
 
 const userSchema = new Schema({
     fullName: {
@@ -62,7 +63,7 @@ userSchema.pre("save", async function (next) {
 
 
 
-userSchema.static("matchPassword", async function (email, password) {
+userSchema.static("matchPasswordAndGenerateToken", async function (email, password) {
     const user = await this.findOne({ email })
     if (!user) throw new Error("User not found")
 
@@ -76,11 +77,14 @@ userSchema.static("matchPassword", async function (email, password) {
 
     if (hashedPassword !== userProvidedHash) throw new Error("Incorrect Password")
 
-    return { ...user._doc, password: undefined, salt: undefined }
-})
+    // return { ...user._doc, password: undefined, salt: undefined }
 
-
-
+    const token =  createTokenForUser(user)
+    return token;
+});
+// in future - any route you can use it
+// User.matchPassword(email,password) ....
+// you can see this example in routes/user.js - login POST request
 
 const user = model("user", userSchema);
 module.exports = user
