@@ -10,10 +10,32 @@
     <%- include("./partials/nav") %>
 
 
-        Hello from
-        <%= JSON.stringify(user) %>
 
-            <%- include("./partials/scripts") %>
+        <div class="container row row-cols-3 mt-3">
+            <% blogs.forEach(blog=> { %>
+
+                <div class="cols">
+
+                    <div class="card col" style="width: 18rem;">
+                        <img src="<%=blog.coverImageUrl %>" class="card-img-top" alt="<%= blog.coverImageUrl %>">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= blog.title %>
+                            </h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of
+                                the card’s content.</p>
+                            <a href="/blog/<%= blog._id  %>" class="btn btn-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+
+                <% }) %>
+        </div>
+
+        
+
+        <%- include("./partials/scripts") %>
 </body>
 
 </html>

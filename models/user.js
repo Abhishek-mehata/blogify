@@ -22,7 +22,7 @@ const userSchema = new Schema({
     },
     profileImageURL: {
         type: String,
-        default: "./public/avatar.jpg"
+        default: "/avatar.jpg"
     },
     role: {
         type: String,
@@ -40,9 +40,9 @@ const userSchema = new Schema({
 userSchema.pre("save", async function (next) {
     const user = this // this points to the current user
 
-    // user is not modified
+    // password is not modified
     if (!user.isModified("password")) {
-        return next
+        return next()
     }
 
 
@@ -56,7 +56,7 @@ userSchema.pre("save", async function (next) {
     user.password = hashedPwd;
 
     // do stuff
-    next
+    return next()
 });
 
 

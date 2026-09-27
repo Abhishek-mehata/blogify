@@ -1,3 +1,5 @@
+const Blog = require("./models/blog")
+
 const express = require("express")
 const path = require("path")
 const app = express()
@@ -18,24 +20,33 @@ mongoose.connect("mongodb://127.0.0.1:27017/blogify")
 // routes
 const staticRoute = require("./routes/static")
 const userRoute = require("./routes/user");
+const blogRoute = require("./routes/blog");
 const { checkForAuthenticationCookie } = require("./middlewares/authentication");
 
+// middlewares
 app.set("view engine", "ejs")
 app.set("views", path.resolve("./views"))
 app.use(cookieParser())
 app.use(checkForAuthenticationCookie("token"))
+app.use(express.static(path.resolve("./public")));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use("/", staticRoute,)
-app.get("/", (req, res) => {
+// app.use("/", staticRoute,)
+app.get("/", async (req, res) => {
+    const allBlogs = await Blog.find({}).sort({ "createdAt": -1 });
+    console.log(allBlogs)
     return res.render("home", {
-        user: req.user
+        user: req.user,
+        blogs: allBlogs
     })
-})
+});
+
 
 app.use("/user", userRoute);
+app.use("/blog", blogRoute);
+
 
 
 app.listen(PORT, () => {
