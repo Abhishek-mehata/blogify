@@ -3,33 +3,35 @@
 
 <head>
     <%- include("./partials/head") %>
-        <title>Signup Page</title>
+        <title>Create Account | Blogify</title>
 </head>
 
-<body style="background-color: ; color: ;">
+<body>
     <%- include("./partials/nav") %>
 
-
-        <div class="container mt-4">
-            <!-- action - to where the post request should go -->
-            <form method="post" action="/user/signup">
-                <div class="mb-3">
-                    <label for="fullName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="fullName" aria-describedby="fullName" name="fullName">
-                </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="email" name="email">
-                    <div id="email" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-
+    <main class="form-page">
+        <header class="form-heading">
+            <span class="eyebrow">Join the conversation</span>
+            <h1>Create your account</h1>
+            <p>Start sharing stories with the Blogify community.</p>
+        </header>
+        <form class="auth-panel" method="post" action="/user/signup">
+            <div class="mb-4">
+                <label for="fullName" class="form-label">Full name</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" autocomplete="name" required>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" autocomplete="new-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Create account</button>
+            <p class="form-switch-link">Already have an account? <a href="/user/signin">Sign in</a></p>
+        </form>
+    </main>
 
         <%- include("./partials/scripts") %>
 </body>

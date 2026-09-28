@@ -3,41 +3,34 @@
 
 <head>
     <%- include("./partials/head") %>
-        <title>Add New Blog Page</title>
+        <title>Write a Story | Blogify</title>
 </head>
 
-<body style="background-color: black; color: white;">
+<body>
     <%- include("./partials/nav") %>
 
-        <div class="container mt-3">
-
-            <form method="post" action="/blog/" enctype="multipart/form-data">
-
-                <!-- cover image section -->
-                <div class="mb-3">
-                    <label for="coverImage" class="form-label">Cover Image</label>
-                    <input type="file" class="form-control" id="coverImage" aria-describedby="coverImage"
-                        name="coverImage" />
-                </div>
-
-                <!-- title section -->
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="title" aria-describedby="title" name="title" />
-                </div>
-
-                <!-- body section -->
-                <div class="mb-3">
-                    <label for="body">Body</label>
-                    <textarea class="form-control" placeholder="Add body comment here" id="body" name="body"></textarea>
-                </div>
-
-                <!-- button section -->
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
+    <main class="form-page">
+        <header class="form-heading">
+            <span class="eyebrow">Your next story</span>
+            <h1>Write a new post</h1>
+            <p>Give your idea a title, an image, and room to unfold.</p>
+        </header>
+        <form class="editor-panel" method="post" action="/blog/" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="coverImage" class="form-label">Cover image</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" required>
+            </div>
+            <div class="mb-4">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="A title that draws readers in" required>
+            </div>
+            <div class="mb-4">
+                <label for="body" class="form-label">Your story</label>
+                <textarea class="form-control" placeholder="Start writing..." id="body" name="body" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Publish story</button>
+        </form>
+    </main>
 
         <%- include("./partials/scripts") %>
 </body>

@@ -3,37 +3,80 @@
 
 <head>
     <%- include("./partials/head") %>
-        <title>Home Page</title>
+        <title>Blogify | Stories</title>
 </head>
 
-<body style="background-color: black; color: white;">
+<body>
     <%- include("./partials/nav") %>
 
+    <main class="home-container">
+        <header class="home-heading">
+            <div>
+                <span class="eyebrow">Blogify / Field notes</span>
+                <h1>Stories made to stay with you.</h1>
+                <p>Independent voices, useful ideas, and the details worth passing along.</p>
+            </div>
+            <span class="edition-note">A journal for curious minds</span>
+        </header>
 
-
-        <div class="container row row-cols-3 mt-3">
-            <% blogs.forEach(blog=> { %>
-
-                <div class="cols">
-
-                    <div class="card col" style="width: 18rem;">
-                        <img src="<%=blog.coverImageUrl %>" class="card-img-top" alt="<%= blog.coverImageUrl %>">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= blog.title %>
-                            </h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of
-                                the card’s content.</p>
-                            <a href="/blog/<%= blog._id  %>" class="btn btn-primary">View</a>
-                        </div>
+        <% if (blogs.length) { %>
+            <% const featuredBlog = blogs[0]; %>
+            <article class="featured-story">
+                <div class="featured-copy">
+                    <span class="story-index">Editor's pick / 01</span>
+                    <h2><%= featuredBlog.title %></h2>
+                    <p class="featured-excerpt"><%= featuredBlog.body %></p>
+                    <div class="featured-footer">
+                        <a href="/blog/<%= featuredBlog._id %>" class="featured-link">Read the story <span aria-hidden="true">&rarr;</span></a>
+                        <time class="story-date" datetime="<%= featuredBlog.createdAt ? new Date(featuredBlog.createdAt).toISOString() : '' %>"><%= featuredBlog.createdAt ? new Date(featuredBlog.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) : 'Latest story' %></time>
                     </div>
                 </div>
+                <div class="featured-image-wrap">
+                    <% if (featuredBlog.coverImageUrl) { %>
+                        <img src="<%= featuredBlog.coverImageUrl %>" class="featured-image" alt="Cover for <%= featuredBlog.title %>">
+                    <% } else { %>
+                        <div class="featured-placeholder" aria-hidden="true"><span>Blogify / Field notes</span></div>
+                    <% } %>
+                </div>
+            </article>
 
+            <% if (blogs.length > 1) { %>
+                <header class="archive-heading">
+                    <h2>From the journal</h2>
+                    <span><%= blogs.length - 1 %> more <%= blogs.length === 2 ? 'story' : 'stories' %></span>
+                </header>
+                <section class="blog-grid" aria-label="More blog posts">
+                <% blogs.slice(1).forEach(blog=> { %>
+                    <article class="blog-card">
+                        <div class="blog-card-image-wrapper">
+                            <% if (blog.coverImageUrl) { %>
+                                <img src="<%= blog.coverImageUrl %>" class="blog-card-image" alt="Cover for <%= blog.title %>">
+                            <% } else { %>
+                                <div class="blog-card-placeholder" aria-hidden="true"></div>
+                            <% } %>
+                        </div>
+                        <div class="blog-card-body">
+                            <h2 class="blog-card-title"><%= blog.title %></h2>
+                            <p class="blog-card-text"><%= blog.body %></p>
+                            <div class="blog-card-footer">
+                                <a href="/blog/<%= blog._id %>" class="read-more" aria-label="Read <%= blog.title %>">Read story <span aria-hidden="true">&rarr;</span></a>
+                            </div>
+                        </div>
+                    </article>
                 <% }) %>
-        </div>
-
-        
+                </section>
+            <% } %>
+        <% } else { %>
+            <section class="glass-panel empty-state">
+                <span class="story-index">The journal begins here</span>
+                <h2>No stories published yet.</h2>
+                <p>There is room for a first idea to take shape.</p>
+                <% if (locals.user) { %>
+                    <a href="/blog/add-new" class="featured-link">Write the first story <span aria-hidden="true">&rarr;</span></a>
+                <% } %>
+            </section>
+        <% } %>
+    </main>
 
         <%- include("./partials/scripts") %>
 </body>

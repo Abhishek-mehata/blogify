@@ -1,3 +1,6 @@
+change index.js to app.js for aws
+
+```json
 {
   "name": "my-blog",
   "version": "1.0.0",
@@ -27,3 +30,24 @@
     "nodemon": "^3.1.14"
   }
 }
+```
+
+
+use the professinal env variables 
+```js
+const PORT = process.env.PORT || 8000
+
+// connect db
+mongoose.connect(process.env.MONGO_URL)
+    .then((e) => {
+        console.log("Mongodb Conected Successfully")
+    }).catch((e) => {
+        console.log("Database connection failed")
+    });
+```
+
+
+
+
+- go to console.aws.com
+create a free account on aws

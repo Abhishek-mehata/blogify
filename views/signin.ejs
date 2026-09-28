@@ -3,29 +3,31 @@
 
 <head>
     <%- include("./partials/head") %>
-        <title>Signin Page</title>
+        <title>Sign In | Blogify</title>
 </head>
 
-<body style="background-color: ; color: ;">
+<body>
     <%- include("./partials/nav") %>
 
-
-        <div class="container mt-4">
-            <!-- action - to where the post request should go -->
-            <form method="post" action="/user/signin">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="email" aria-describedby="email" name="email">
-                    <div id="email" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-
+    <main class="form-page">
+        <header class="form-heading">
+            <span class="eyebrow">Welcome back</span>
+            <h1>Sign in to Blogify</h1>
+            <p>Your reading list and conversations are waiting.</p>
+        </header>
+        <form class="auth-panel" method="post" action="/user/signin">
+            <div class="mb-4">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" autocomplete="email" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" autocomplete="current-password" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Sign in</button>
+            <p class="form-switch-link">New to Blogify? <a href="/user/signup">Create an account</a></p>
+        </form>
+    </main>
 
         <%- include("./partials/scripts") %>
 </body>
