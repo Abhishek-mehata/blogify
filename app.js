@@ -11,15 +11,6 @@ const PORT = process.env.PORT || 8000
 
 
 
-// connect db
-mongoose.connect(process.env.MONGO_URL)
-    .then((e) => {
-        console.log("Mongodb Conected Successfully")
-    }).catch((e) => {
-        console.log("Database connection failed")
-    });
-
-
 // routes
 const staticRoute = require("./routes/static")
 const userRoute = require("./routes/user");
@@ -28,10 +19,10 @@ const { checkForAuthenticationCookie } = require("./middlewares/authentication")
 
 // middlewares
 app.set("view engine", "ejs")
-app.set("views", path.resolve("./views"))
+app.set("views", path.join(__dirname, "views"))
 app.use(cookieParser())
 app.use(checkForAuthenticationCookie("token"))
-app.use(express.static(path.resolve("./public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -52,6 +43,20 @@ app.use("/blog", blogRoute);
 
 
 
-app.listen(PORT, () => {
-    console.log(`Server started at port ${PORT}`)
-})
+async function startServer() {
+    if (!process.env.MONGO_URL) {
+        throw new Error("MONGO_URL is not configured. Set it in the hosting provider environment variables.");
+    }
+
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("MongoDB connected successfully");
+
+    app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server started at port ${PORT}`);
+    });
+}
+
+startServer().catch((error) => {
+    console.error("Application startup failed:", error.message);
+    process.exit(1);
+});
