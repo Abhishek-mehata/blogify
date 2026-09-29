@@ -37,12 +37,12 @@ const userSchema = new Schema({
 // --------
 // 
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", function () {
     const user = this // this points to the current user
 
     // password is not modified
     if (!user.isModified("password")) {
-        return next()
+        return
     }
 
 
@@ -55,8 +55,6 @@ userSchema.pre("save", async function (next) {
     user.salt = salt;
     user.password = hashedPwd;
 
-    // do stuff
-    return next()
 });
 
 

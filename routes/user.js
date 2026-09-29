@@ -30,17 +30,25 @@ router.post("/signup", async function (req, res) {
     // console.log( req.body)
     const { fullName, email, password } = req.body;
 
-    if (User.exists(email)) {
-        // throw new Error("Email Already Exists");
+    try {
+        const existingUser = await User.exists({ email });
+        if (existingUser) {
+            return res.status(409).render("signup", {
+                error: "An account with this email already exists."
+            });
+        }
+
+        await User.create({ fullName, email, password });
+        return res.redirect("/");
+    } catch (error) {
+        const duplicateEmail = error.code === 11000;
+        console.error("Signup failed:", error.message);
+        return res.status(duplicateEmail ? 409 : 500).render("signup", {
+            error: duplicateEmail
+                ? "An account with this email already exists."
+                : "Unable to create your account. Please try again."
+        });
     }
-
-    await User.create({
-        fullName, email, password
-    });
-
-
-    return res.redirect("/")
-
 })
 
 router.get("/logout", (req, res) => {
